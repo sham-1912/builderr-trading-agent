@@ -246,6 +246,10 @@ def run_bot(decide, bars: dict[str, list[dict]]) -> dict:
         "ret": equity / START_CASH - 1,
         "trades": trades,
         "curve": [round(x, 2) for x in curve],  # daily mark-to-close equity, aligned to eval_dates
+        "cash": round(cash, 2),
+        # current holdings (ticker -> shares) so the site can mark them live at
+        # intraday prices between daily runs — real mark-to-market, not faked motion.
+        "holdings": [{"t": t, "q": round(q, 4)} for t, q in positions.items() if q > 0],
     }
 
 
@@ -285,7 +289,9 @@ def main() -> int:
             continue
         rows.append({"name": name, "label": label,
                      "equity": m["equity"], "pnl": m["pnl"],
-                     "ret": round(m["ret"], 4), "trades": m["trades"]})
+                     "ret": round(m["ret"], 4), "trades": m["trades"],
+                     # for live intraday marking on the site (public bots only)
+                     "cash": m["cash"], "holdings": m["holdings"]})
         curves[name] = m["curve"]
         print(f"  {name:24s} ${m['equity']:,.0f}  P&L {m['pnl']:+,.0f} ({m['ret']*100:+.2f}%)  Trades={m['trades']}")
 
