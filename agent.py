@@ -158,7 +158,7 @@ def _market_prices(market_state: dict[str, list[dict[str, Any]]]) -> dict[str, f
 
 
 def _risk_off_targets(market_state: dict[str, list[dict[str, Any]]]) -> dict[str, float]:
-    return {ticker: weight for ticker, weight in DEFENSIVE_WEIGHTS if closes(market_state.get(ticker))}
+    return {}
 
 
 def _scale_caps(weights: dict[str, float]) -> dict[str, float]:
@@ -176,15 +176,15 @@ def target_weights(market_state: dict[str, list[dict[str, Any]]]) -> dict[str, f
     if len(spy) < 50 or len(qqq) < 50:
         return {}
 
-    spy_sma50 = sma(spy, 50)
-    qqq_sma50 = sma(qqq, 50)
+    spy_sma40 = sma(spy, 40)
+    qqq_sma40 = sma(qqq, 40)
     qqq_vol20 = realized_vol(qqq, 20)
     risk_on = bool(
-        spy_sma50 is not None
-        and qqq_sma50 is not None
+        spy_sma40 is not None
+        and qqq_sma40 is not None
         and qqq_vol20 is not None
-        and spy[-1] > spy_sma50
-        and qqq[-1] > qqq_sma50
+        and spy[-1] > spy_sma40
+        and qqq[-1] > qqq_sma40
         and qqq_vol20 < 0.35
     )
     if not risk_on:
@@ -215,9 +215,9 @@ def target_weights(market_state: dict[str, list[dict[str, Any]]]) -> dict[str, f
     qqq_mom20 = momentum(qqq, 20)
     overlay_on = bool(
         qqq_sma20 is not None
-        and qqq_sma50 is not None
+        and qqq_sma40 is not None
         and qqq_mom20 is not None
-        and qqq_sma20 > qqq_sma50
+        and qqq_sma20 > qqq_sma40
         and qqq_mom20 > 0.0
         and qqq_vol20 < 0.28
         and closes(market_state.get("QLD"))
@@ -226,9 +226,26 @@ def target_weights(market_state: dict[str, list[dict[str, Any]]]) -> dict[str, f
 
     weights: dict[str, float] = {}
     base_budget = 0.76 if overlay_on else 0.92
-    per_winner = min(MAX_WEIGHT - 0.02, base_budget / len(winners))
+    
+    # Inverse realized volatility weighting for the selected momentum winners
+    inv_vols = {}
     for ticker in winners:
-        weights[ticker] = per_winner
+        v = realized_vol(closes(market_state.get(ticker)), 20)
+        if v is not None and v > 1e-6:
+            inv_vols[ticker] = 1.0 / v
+        else:
+            inv_vols[ticker] = 1.0 / 0.20  # fallback to 20% vol
+            
+    total_inv_vol = sum(inv_vols.values())
+    if total_inv_vol > 0:
+        for ticker in winners:
+            raw_w = (inv_vols[ticker] / total_inv_vol) * base_budget
+            weights[ticker] = min(raw_w, MAX_WEIGHT - 0.02)
+    else:
+        # Fallback to equal weighting if sum is 0
+        per_winner = min(MAX_WEIGHT - 0.02, base_budget / len(winners))
+        for ticker in winners:
+            weights[ticker] = per_winner
 
     if overlay_on:
         weights["QLD"] = 0.11

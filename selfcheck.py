@@ -104,16 +104,16 @@ def main() -> int:
         total_orders += len(out)
         steps += 1
 
-    print(f"✓ {agent_file} loaded and ran {steps} steps cleanly.")
+    print(f"[PASS] {agent_file} loaded and ran {steps} steps cleanly.")
     print(f"  {total_orders} well-formed orders emitted across the run.")
     print("  Smoke test only — real admission runs centrally on hidden market data.")
 
     high, warn = _scan_secrets(Path(__file__).parent, Path(__file__).name)
     for f, ln, why in warn:
         loc = f"{f}:{ln}" if ln else f
-        print(f"  ⚠ possible secret in {loc} — {why}")
+        print(f"  [WARN] possible secret in {loc} — {why}")
     if high:
-        print("\n✗ SECRET DETECTED — do NOT push this repo until you remove it:")
+        print("\n[FAIL] SECRET DETECTED — do NOT push this repo until you remove it:")
         for f, ln, label in high:
             print(f"    {f}:{ln}  ({label})")
         print("  Your repo is public-readable; a committed key leaks to everyone.")
@@ -126,8 +126,8 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except AssertionError as e:
-        print(f"✗ FAILED: {e}")
+        print(f"[FAIL] FAILED: {e}")
         sys.exit(1)
     except Exception as e:  # noqa: BLE001
-        print(f"✗ CRASHED: {e!r}")
+        print(f"[FAIL] CRASHED: {e!r}")
         sys.exit(1)

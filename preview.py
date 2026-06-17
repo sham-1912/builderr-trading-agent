@@ -264,10 +264,10 @@ def main() -> int:
         print("VERDICT: clears the safety bar — but your bot never traded. It would be ADMITTED,")
         print("         yet it's sitting in cash. Check your signals before you submit.")
     elif admitted:
-        print("VERDICT: ✓ You clear admission's safety bar — you're very likely to be ADMITTED.")
+        print("VERDICT: [PASS] You clear admission's safety bar — you're very likely to be ADMITTED.")
         print("         Push your repo + email submit@builderr.ai to lock in your official run.")
     else:
-        print("VERDICT: ✗ Not yet. Fix the FAIL line(s) above — those are the same limits the real")
+        print("VERDICT: [FAIL] Not yet. Fix the FAIL line(s) above — those are the same limits the real")
         print("         admission enforces, so this would be rejected. The numbers are easy to chase;")
         print("         the safety bar is the part that actually gates you.")
     print("\n(Numbers above are on SAMPLE public windows — illustrative, NOT your official score.")
