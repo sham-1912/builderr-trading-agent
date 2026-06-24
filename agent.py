@@ -351,9 +351,12 @@ def decide(
     if not should_rebalance:
         return []
 
-    targets = target_weights(market_state)
-    if not targets:
+    spy = closes(market_state.get("SPY"))
+    qqq = closes(market_state.get("QQQ"))
+    if len(spy) < 50 or len(qqq) < 50:
         return []
+
+    targets = target_weights(market_state)
 
     prices = _market_prices(market_state)
     positions = current_positions(portfolio_state)
