@@ -701,8 +701,9 @@ def _run(
         do_rebalance = False
 
     # ---- Phase 8: target weights ----
+    taper_to_use = max(taper_mult, 0.75) if _state == "FULL" else taper_mult
     weights = (
-        _build_targets(_state, taper_mult, market_state, cache, _stop_block)
+        _build_targets(_state, taper_to_use, market_state, cache, _stop_block)
         if do_rebalance
         else {}
     )
