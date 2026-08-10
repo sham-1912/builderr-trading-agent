@@ -77,6 +77,15 @@ BETA: dict[str, float] = {
     "TQQQ": 3.0, "SOXL": 3.0, "UPRO": 3.0, "SPXL": 3.0, "TNA": 3.0, "FAS": 3.0,
     "TECL": 3.0, "LABU": 3.0, "CURE": 3.0, "DRN": 3.0, "UDOW": 3.0, "NAIL": 3.0,
 }
+BETA_MULTIPLE: dict[str, float] = BETA
+
+
+def target_weights(market_state: dict[str, Any]) -> dict[str, float]:
+    cache: dict[str, Optional[list[float]]] = {}
+    stop_block: dict[str, int] = {}
+    r_score = _compute_regime_score(market_state, cache)
+    return _build_targets(r_score, market_state, cache, stop_block)
+
 
 # ---------------------------------------------------------------------------
 # 3. Persistent state.

@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 """builderr fairness tests — PUBLISHED FOR AUDIT.
 
 These run on our private scoring engine (so you cannot execute them from this
-repo), but here is the actual source so you can see exactly what \"fair\" means:
+repo), but here is the actual source so you can see exactly what "fair" means:
 same code + same data => identical result, and the same order => the same fill
 regardless of which agent sent it. If these ever failed, the leaderboard would
 be untrustworthy. This is the real file from our test suite, unedited below.
@@ -17,7 +19,6 @@ They prove two guarantees:
 
 If either ever breaks, the leaderboard is not trustworthy and these tests fail loudly.
 """
-from __future__ import annotations
 
 import sys
 from datetime import datetime, timedelta, timezone
