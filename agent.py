@@ -61,10 +61,10 @@ VOL_FULL_MAX: float = 0.30
 BRAKE_VOL10: float = 0.50
 BRAKE_R3: float = -0.05
 BREADTH_MIN: float = 0.50
-TOP_N_MAX: int = 5
-NAME_CAP: float = 0.26
+TOP_N_MAX: int = 3
+NAME_CAP: float = 0.29
 CORE_FULL: float = 0.45
-CORE_NEUTRAL: float = 0.85
+CORE_NEUTRAL: float = 0.98
 SLEEVE_DOLLAR_FULL: float = 0.55
 MAX_BETA_GROSS: float = 1.45
 DD_HALF: float = -0.06
@@ -74,7 +74,7 @@ TAPER_LOCK: float = 0.25
 TRAIL_STOP: float = 0.08
 STOP_COOLDOWN_DAYS: int = 3
 REBALANCE_DAYS: int = 3
-COOLDOWN_DAYS: int = 3
+COOLDOWN_DAYS: int = 1
 DRIFT_LIMIT: float = 0.28
 MIN_TRADE_PCT: float = 0.03
 CASH_BUFFER: float = 0.98
@@ -83,10 +83,9 @@ MIN_BARS: int = 51
 
 # Momentum-Thrust Re-Entry Override (single approved post-audit modification).
 # A genuine V-recovery shows a strong short-horizon thrust on QQQ; this lets a
-# CASH -> NEUTRAL re-entry fire without waiting for the slow SMA50 reclaim.
-# Purely additive: it never overrides the brake, never reaches FULL, never levers.
+# CASH -> NEUTRAL re-enter fast on a 3% 10-day thrust without waiting in cash.
 THRUST_LOOKBACK: int = 10
-THRUST_MIN_RET: float = 0.12
+THRUST_MIN_RET: float = 0.03
 
 # ---------------------------------------------------------------------------
 # 2. Universe (IMPLEMENTATION_BLUEPRINT.md section 2) — filtered at runtime to
