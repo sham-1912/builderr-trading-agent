@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-07T18:36:23Z",
+  "generated_at_utc": "2026-09-07T22:27:39Z",
   "as_of_market_date": "2026-09-04",
   "round_start": "2026-06-02",
   "start_cash": 100000.0,
@@ -282,11 +282,11 @@
     {
       "name": "harsimran",
       "label": "round 1 \u00b7 entrant",
-      "equity": 98412.81,
-      "pnl": -1587.19,
+      "equity": 98412.82,
+      "pnl": -1587.18,
       "ret": -0.0159,
       "trades": 83,
-      "cash": 44365.93,
+      "cash": 44365.94,
       "holdings": [
         {
           "t": "XLP",
@@ -636,11 +636,11 @@
     {
       "name": "zaid",
       "label": "round 1 \u00b7 entrant",
-      "equity": 91704.14,
-      "pnl": -8295.86,
+      "equity": 91704.15,
+      "pnl": -8295.85,
       "ret": -0.083,
       "trades": 115,
-      "cash": 69074.02,
+      "cash": 69074.03,
       "holdings": [
         {
           "t": "UPRO",
